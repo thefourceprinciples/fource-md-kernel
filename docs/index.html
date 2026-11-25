@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fource-MD | Mechanical Verification Kernel (CIF-MD-000)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <div>
+    <h1><span>FOURCE-MD</span> // Mechanical Verification Kernel</h1>
+    <p>Deterministic Shop-Floor Engineering Audit &amp; CUC Persistence Checker (CIF-MD-000)</p>
+  </div>
+  <div class="actions">
+    <button class="secondary" onclick="location.reload()">Reset Defaults</button>
+    <button onclick="window.print()">Print / Save PDF Report</button>
+  </div>
+</header>
+
+<div class="container">
+  <div class="meta-bar">
+    <div><label>Project / Job Number</label><input type="text" id="job_id" value="JOB-2026-001" /></div>
+    <div><label>Part Name / Print Rev</label><input type="text" id="part_name" value="Drive Hub &amp; Shaft Assembly Rev A" /></div>
+    <div><label>Prepared By</label><input type="text" id="engineer_name" value="The Fource Principles" /></div>
+    <div><label>Audit Date</label><input type="text" id="audit_date" /></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('pressfit', this)">Δ18 Press &amp; Shrink Fit</div>
+    <div class="tab" onclick="switchTab('bolts', this)">Δ16 Bolted Fixture &amp; Preload</div>
+    <div class="tab" onclick="switchTab('stackup', this)">Δ04 Tolerance Stack-Up</div>
+    <div class="tab" onclick="switchTab('shaft', this)">Δ07 Shaft &amp; Bearing Slope</div>
+  </div>
+
+  <div id="panels-root"></div>
+</div>
+
+<footer>
+  Fource-MD Kernel (CIF-MD-000) &bull; Apache 2.0 License &bull; Powered by Coherence-Under-Constraint (CUC) Algebra
+</footer>
+
+<script src="panels.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

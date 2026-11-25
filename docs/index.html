@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fource-MD | Mechanical Verification Kernel (CIF-MD-000)</title>
+  <title>Fource-MD | Complete 18-Chapter Mechanical Verification Kernel (CIF-MD-000)</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <header>
   <div>
-    <h1><span>FOURCE-MD</span> // Mechanical Verification Kernel</h1>
-    <p>Deterministic Shop-Floor Engineering Audit &amp; CUC Persistence Checker (CIF-MD-000)</p>
+    <h1><span>FOURCE-MD</span> // Complete 18-Chapter Verification Kernel</h1>
+    <p>Deterministic Mechanical Engineering Audit &amp; CUC Persistence Checker (CIF-MD-000)</p>
   </div>
   <div class="actions">
     <button class="secondary" id="unit_btn" onclick="toggleUnits()">Units: METRIC (mm / N)</button>
@@ -23,26 +23,34 @@
 <div class="container">
   <div class="meta-bar">
     <div><label>Project / Job Number</label><input type="text" id="job_id" value="JOB-2026-001" /></div>
-    <div><label>Part Name / Print Rev</label><input type="text" id="part_name" value="Drive Hub &amp; Shaft Assembly Rev A" /></div>
+    <div><label>Part Name / Print Rev</label><input type="text" id="part_name" value="Full Assembly Audit Rev A" /></div>
     <div><label>Prepared By</label><input type="text" id="engineer_name" value="The Fource Principles" /></div>
     <div><label>Audit Date</label><input type="text" id="audit_date" /></div>
   </div>
 
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('pressfit', this)">Δ18 Press &amp; Shrink Fit</div>
-    <div class="tab" onclick="switchTab('bolts', this)">Δ16 Bolted Fixture &amp; Preload</div>
-    <div class="tab" onclick="switchTab('stackup', this)">Δ04 Tolerance Stack-Up</div>
-    <div class="tab" onclick="switchTab('shaft', this)">Δ07 Shaft &amp; Bearing Slope</div>
+    <div class="tab active" onclick="switchTab('pressfit', this)">Δ18 Press Fits</div>
+    <div class="tab" onclick="switchTab('bolts', this)">Δ16 Bolts</div>
+    <div class="tab" onclick="switchTab('welds', this)">Δ17 Welds</div>
+    <div class="tab" onclick="switchTab('stackup', this)">Δ04 Stack-Up</div>
+    <div class="tab" onclick="switchTab('shaft', this)">Δ07 Shafts</div>
+    <div class="tab" onclick="switchTab('foundations', this)">Δ01–03 Materials</div>
+    <div class="tab" onclick="switchTab('stress', this)">Δ05–06 Stress/Buckling</div>
+    <div class="tab" onclick="switchTab('bearings', this)">Δ08–09 Bearings</div>
+    <div class="tab" onclick="switchTab('gears', this)">Δ10–12 Gears/Drives</div>
+    <div class="tab" onclick="switchTab('actuators', this)">Δ13–15 Brakes/Springs/Screws</div>
   </div>
 
   <div id="panels-root"></div>
 </div>
 
 <footer>
-  Fource-MD Kernel (CIF-MD-000) &bull; Apache 2.0 License &bull; Powered by Coherence-Under-Constraint (CUC) Algebra
+  Fource-MD Kernel (CIF-MD-000) &bull; Chapters 01–18 &bull; Apache 2.0 License
 </footer>
 
 <script src="panels.js"></script>
+<script src="panels_extra.js"></script>
 <script src="app.js"></script>
+<script src="app_extra.js"></script>
 </body>
 </html>

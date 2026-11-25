@@ -32,7 +32,14 @@ class TestRefactoredFourceKernel(unittest.TestCase):
 
     def test_contradiction_branching_and_cs_selection(self):
         items = ["e1", "e2", "e3", "e4"]
-        scores = {("e1", "e2"): 0.1, ("e1", "e3"): 0.8, ("e2", "e3"): 0.7, ("e3", "e4"): 0.2}
+        scores = {
+            ("e1", "e2"): 0.1,
+            ("e1", "e3"): 0.8,
+            ("e2", "e3"): 0.7,
+            ("e1", "e4"): 0.75,
+            ("e2", "e4"): 0.85,
+            ("e3", "e4"): 0.2,
+        }
         def ctr(a, b):
             return scores.get((a, b), scores.get((b, a), 0.1))
         clusters = branch_contradictions(items, ctr, theta_ctr=0.6)

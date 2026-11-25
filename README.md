@@ -2,26 +2,27 @@
 
 **Deterministic Python 3 Verification DAG & Coherence-Under-Constraint (CUC) Kernel for Modern Machine Design (`CIF-MD-000`)**
 
-`fource-md-kernel` transforms the 18-chapter *Modern Machine Design Reference* (reconstructing Deutschman, Michels, and Wilson's *Machine Design: Theory and Practice* under modern ASME, ISO, AGMA, VDI, and AWS codes) into an executable, zero-regression engineering verification suite.
+`fource-md-kernel` transforms the 18-chapter *Modern Machine Design Reference* (reconstructing Deutschman, Michels, and Wilson's *Machine Design: Theory and Practice* under modern ASME, ISO, AGMA, VDI, and AWS codes) into an executable, zero-regression engineering verification suite powered by **Fource Algebra (PFA, CS, and COA)**.
 
 Instead of evaluating mechanical components in isolation, every chapter acts as a deterministic **Delta Node (`Δ01`–`Δ18`)** inside a **Directed Acyclic Graph (DAG)**. Modifying any upstream parameter automatically hashes and invalidates coupled downstream subsystems so no design change ships without full boundary re-verification.
 
 ---
 
-## Core Governing Laws
+## Core Governing Laws (Fource Algebra Stack)
 
-Every mechanical subsystem evaluated by the kernel must satisfy two foundational invariants before design release:
+Every mechanical subsystem evaluated by the kernel is governed by three coupled algebraic layers:
 
-1. **Multiplicative Coherence Law:**
-   \[C = O \times E \times H \times X\]
-   * **Origin Integrity (O):** Manufacturing cleanliness, material batch fidelity, and absence of initial flaws.
-   * **Expression Fidelity (E):** Kinematic alignment, stiffness bounds, and geometric fit under operating load.
-   * **Historical Continuity (H):** Resistance to cumulative fatigue, wear, creep, and preload relaxation.
-   * **Resonance Stability (X):** Separation from critical speeds, buckling bifurcations, surge, and peel instabilities.
+1. **PFA (Phase / Fource Algebra — Order-Invariant Group Lock):**
+   \[R_{\text{complex}} = \frac{1}{n} \sum_{k=1}^n e^{i\phi_k}, \qquad r = \vert{}R_{\text{complex}}\vert{} \in [0, 1]\]
+   Multi-stage shafts, gear meshes, and rotary carriers fuse via the Kuramoto order parameter r, ensuring phase-alignment coherence is independent of evaluation order.
 
-2. **Persistence Margin Invariant:**
-   \[\text{Persistence Margin} = (C \cdot K_{\text{compat}}) - \lambda > 0\]
-   System coherence scaled by physical/code compliance (\(K_{\text{compat}}\)) must strictly exceed normalized complexity and manufacturing constraint cost (λ).
+2. **CS (Coherence Semiring — Min-Plus Distortion Energy):**
+   \[C_{\text{total}} = C_K^a \cdot C_T^b \cdot C_{\phi,\text{group}}^c \cdot C_{\text{ctr}}^d, \qquad E_{\text{total}} = -\ln(C_{\text{total}} + \epsilon)\]
+   Coherence multiplies across coupled components while distortion energy \(E_{\text{total}}\) adds along dependency chains—allowing incompatible design requirements to branch into separate hypothesis basins (`branch_contradictions`) and select the minimum-distortion architecture (\(k^* = \arg\min_k E_{\text{total},k}\)).
+
+3. **COA (CUC Operator Algebra — Compose → Project → Stabilize):**
+   \[x \star_K y = R\bigl(\Pi_K(x \otimes y)\bigr)\]
+   Every operation couples states, repairs violations onto feasible engineering constraints (\(\Pi_K\)), and settles into a verified equilibrium basin (R).
 
 ---
 
@@ -29,24 +30,25 @@ Every mechanical subsystem evaluated by the kernel must satisfy two foundational
 
 ```text
 fource-md-kernel/
-├── pyproject.toml                # Zero-dependency standard-library Python package config
-├── README.md                     # Architecture overview & quickstart
-├── LICENSE                       # Apache License 2.0
-├── .gitignore                    # Python & local audit exclusions
+├── pyproject.toml                   # Zero-dependency standard-library Python package config
+├── README.md                        # Architecture overview, Fource Algebra laws & quickstart
+├── LICENSE                          # Apache License 2.0
+├── .gitignore                       # Python & local audit exclusions
+├── .github/
+│   └── workflows/
+│       └── ci.yml                   # Automated Python 3.10–3.12 verification workflow
 ├── fource_md/
-│   ├── __init__.py
-│   ├── ledger.py                 # DeltaFragment dataclass, C = O*E*H*X scorer & SHA-256 hasher
-│   ├── graph.py                  # CIF-MD-000 DAG dependency & stale-invalidation engine
-│   └── deltas/                   # Chapter verification nodes (Δ01–Δ18)
+│   ├── __init__.py                  # Top-level exports (Phasor, DeltaFragment, CUCVerificationGraph)
+│   ├── algebra.py                   # PFA Kuramoto fusion, CS distortion E_total, COA & branching
+│   ├── ledger.py                    # Unified DeltaFragment with UnifiedCoherenceScore & SHA-256 hash
+│   ├── graph.py                     # CIF-MD-000 DAG solver, invalidation & multi-branch evaluator
+│   └── deltas/                      # All 18 Chapter Verification Nodes (Δ01–Δ18)
 │       ├── __init__.py
-│       ├── delta_03_materials.py # Marin endurance limit & yield envelope
-│       ├── delta_07_shafts.py    # Goodman–von Mises shaft diameter & bearing slope
-│       ├── delta_09_bearings.py  # ISO 281 modified bearing rating life (L_nm)
-│       ├── delta_11_gears.py     # Helical 3D gear forces (Wt, Wr, Wa)
-│       ├── delta_16_bolts.py     # VDI 2230 housing bolt separation & fatigue
-│       └── delta_18_axisym.py    # Shrink-fit hub contact pressure & slip torque
-└── examples/
-    └── helical_gearbox_audit.py  # Coupled multi-chapter audit & perturbation cascade
+│       ├── part1_foundations.py     # Δ01–Δ06: Reliability, Materials, Marin Se, Tolerances, Buckling, Fatigue
+│       ├── part2_rotary.py          # Δ07–Δ12: Shafts, Journal/Rolling Bearings, Spur/Helical/Worm Gears, Belts
+│       └── part3_joints_axisym.py   # Δ13–Δ18: Brakes/Clutches, Springs, Power Screws, Bolts, Welds, Axisymmetric
+└── tests/
+    └── test_fource_algebra.py       # Unit & DAG cascade verification tests across all 18 chapters
 ```
 
 ---
@@ -61,12 +63,10 @@ pip install -e .
 ```
 *(Note: `fource-md-kernel` uses only the Python 3.10+ standard library and requires zero third-party dependencies.)*
 
-### 2. Run the Coupled Gearbox Audit
+### 2. Run the Full Verification Suite
 ```bash
-python examples/helical_gearbox_audit.py
+python -m unittest discover -s tests -v
 ```
-
-This runs an initial verification across `Δ03 → Δ11 → Δ07 → Δ18 → Δ09 → Δ16`, perturbs the helical gear angle $\psi$, invalidates all downstream coupled fragments via SHA-256 state hashes, and flags any Tier-1 constraint violations.
 
 ---
 

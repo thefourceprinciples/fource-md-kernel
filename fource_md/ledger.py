@@ -1,47 +1,58 @@
-from typing import Callable, Dict, List
-from .ledger import DeltaFragment
+from dataclasses import dataclass, field
+from typing import Any, Dict, List
+import hashlib
+import json
+from .algebra import Phasor, UnifiedCoherenceScore, fuse_group
 
-class CUCVerificationGraph:
-    def __init__(self):
-        self.nodes: Dict[str, Callable[[Dict[str, DeltaFragment]], DeltaFragment]] = {}
-        self.deps: Dict[str, List[str]] = {}
-        self.cache: Dict[str, DeltaFragment] = {}
-        self.stale: set[str] = set()
 
-    def register(self, delta_id: str, upstream: List[str], fn: Callable):
-        self.nodes[delta_id] = fn
-        self.deps[delta_id] = upstream
-        self.stale.add(delta_id)
+@dataclass
+class DeltaFragment:
+    delta_id: str
+    doc_id: str
+    inputs: Dict[str, Any]
+    outputs: Dict[str, Any]
+    C_K: float                                       # Constraint feasibility coherence [0, 1]
+    C_T: float                                       # Code/provenance trust coherence [0, 1]
+    carriers: List[Phasor] = field(default_factory=list)
+    ctr_density: float = 0.0
+    tau_threshold: float = 0.50                      # Compatibility threshold tau in (0, 1]
+    violations: List[str] = field(default_factory=list)
+    upstream_hashes: List[str] = field(default_factory=list)
 
-    def invalidate(self, delta_id: str):
-        self.stale.add(delta_id)
-        for node_id, upstreams in self.deps.items():
-            if delta_id in upstreams:
-                self.invalidate(node_id)
+    @property
+    def group_lock_r(self) -> float:
+        if not self.carriers:
+            return 1.0
+        _, r = fuse_group(self.carriers)
+        return round(r, 6)
 
-    def _topo_order(self) -> List[str]:
-        visited, order = set(), []
-        def visit(n: str):
-            if n not in visited:
-                visited.add(n)
-                for u in self.deps.get(n, []):
-                    visit(u)
-                order.append(n)
-        for node in self.nodes:
-            visit(node)
-        return order
+    @property
+    def score(self) -> UnifiedCoherenceScore:
+        return UnifiedCoherenceScore(
+            C_K=self.C_K,
+            C_T=self.C_T,
+            C_phi_group=self.group_lock_r,
+            ctr_density=self.ctr_density,
+        )
 
-    def run(self) -> Dict[str, DeltaFragment]:
-        for node_id in self._topo_order():
-            upstreams = self.deps.get(node_id, [])
-            upstream_changed = any(
-                u in self.stale or
-                self.cache[u].state_hash not in self.cache.get(node_id, DeltaFragment("", "", {}, {}, {"O":1,"E":1,"H":1,"X":1}, 0)).upstream_hashes
-                for u in upstreams
-            )
-            if node_id in self.stale or upstream_changed or node_id not in self.cache:
-                frag = self.nodes[node_id](self.cache)
-                frag.upstream_hashes = [self.cache[u].state_hash for u in upstreams]
-                self.cache[node_id] = frag
-                self.stale.discard(node_id)
-        return self.cache
+    @property
+    def C_total(self) -> float:
+        return self.score.C_total
+
+    @property
+    def E_total(self) -> float:
+        return self.score.E_total
+
+    @property
+    def passed(self) -> bool:
+        return len(self.violations) == 0 and self.C_total >= self.tau_threshold
+
+    @property
+    def state_hash(self) -> str:
+        raw = json.dumps({
+            "delta_id": self.delta_id,
+            "inputs": self.inputs,
+            "outputs": self.outputs,
+            "upstream_hashes": self.upstream_hashes,
+        }, sort_keys=True)
+        return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]

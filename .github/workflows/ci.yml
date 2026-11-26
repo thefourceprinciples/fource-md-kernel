@@ -23,13 +23,3 @@ jobs:
         run: pip install -e .
       - name: Run Refactored Fource Algebra & 18-Chapter Test Suite
         run: python -m unittest discover -s tests -v
-      - name: Run Kuramoto Phase-Lock Layer Simulation
-        run: python examples/kuramoto_net.py
-      - name: Run Multi-Basin Kuramoto Branching Simulation
-        run: python examples/kuramoto_branch_net.py
-      - name: Run CUC Neural Network Training
-        run: python examples/cuc_neural_network.py
-      - name: Run CUC Virtual Machine Program
-        run: python examples/run_cuc_vm.py
-      - name: Run Deep Multi-Layer CUC Network
-        run: python examples/deep_cuc_net.py

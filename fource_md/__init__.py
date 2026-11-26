@@ -12,18 +12,12 @@ from .algebra import (
 )
 from .ledger import DeltaFragment
 from .graph import CUCVerificationGraph, evaluate_hypothesis_branches
-from .vm import CUCInstruction, CUCVirtualMachine
-from .neural import CUCDeepNetwork, CUCPhaseLayer
 
 __all__ = [
     "Phasor",
     "UnifiedCoherenceScore",
     "DeltaFragment",
     "CUCVerificationGraph",
-    "CUCInstruction",
-    "CUCVirtualMachine",
-    "CUCPhaseLayer",
-    "CUCDeepNetwork",
     "branch_contradictions",
     "coa_star",
     "coherence_from_distortion",

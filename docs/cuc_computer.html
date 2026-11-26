@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FOURCE-CUC // Virtual Machine &amp; Phase Neural Visualizer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <div>
+    <h1><span>FOURCE-CUC</span> // Virtual Machine &amp; Neural Visualizer</h1>
+    <p>Interactive Phase/Fource Algebra (PFA), Contradiction Branching &amp; Min-Distortion Selection</p>
+  </div>
+  <div class="actions">
+    <a href="index.html" style="color:#38bdf8;text-decoration:none;font-weight:700;font-size:0.85rem;">&larr; 18-Chapter CAD Kernel</a>
+  </div>
+</header>
+
+<div class="container">
+  <div class="panel active">
+    <div class="card">
+      <h2>1. CUC Virtual Machine (CUC-VM)</h2>
+      <div class="sub">Execute Opcodes: LOAD &rarr; COMPOSE &rarr; PROJECT &rarr; BRANCH &rarr; STABILIZE &rarr; SELECT</div>
+      <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;">
+        <button onclick="vmStep()">Step Next Opcode</button>
+        <button class="secondary" onclick="vmRunAll()">Run Full Program</button>
+        <button class="secondary" onclick="vmReset()">Reset VM</button>
+      </div>
+      <canvas id="phaseCanvas" width="320" height="240" style="width:100%;background:#0b1120;border:1px solid #334155;border-radius:8px;margin-bottom:0.85rem;"></canvas>
+      <div class="cuc-bar" id="vm_status">Ready. Click <strong>Step Next Opcode</strong> to load scattered Phasor stream.</div>
+      <pre id="vm_trace" style="background:#0b1120;border:1px solid #334155;border-radius:6px;padding:0.75rem;font-size:0.78rem;color:#94a3b8;max-height:170px;overflow:auto;margin-top:0.75rem;"></pre>
+    </div>
+
+    <div class="card">
+      <h2>2. Deep CUC Neural Network</h2>
+      <div class="sub">2-Layer Phase-Locking Network Minimizing Additive CS Chain Distortion (E_chain)</div>
+      <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;">
+        <button onclick="netTrain(1)">Train +1 Epoch</button>
+        <button class="secondary" onclick="netTrain(15)">Train +15 Epochs</button>
+        <button class="secondary" onclick="netReset()">Reset Weights</button>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="k">Training Epochs</div><div class="v" id="nn_epoch">0</div></div>
+        <div class="metric"><div class="k">Mean Target E_chain</div><div class="v" id="nn_echain">—</div></div>
+        <div class="metric"><div class="k">Regime Alpha (Low-Freq)</div><div class="v" id="nn_p1">—</div></div>
+        <div class="metric"><div class="k">Regime Beta (High-Freq)</div><div class="v" id="nn_p2">—</div></div>
+      </div>
+      <div id="nn_banner" class="status-banner status-pass">
+        <span id="nn_acc">ACCURACY: 50.0%</span>
+        <span>CS MIN-DISTORTION</span>
+      </div>
+      <div class="cuc-bar" id="nn_log">Click <strong>Train +15 Epochs</strong> to watch hidden and output basins phase-lock onto target regimes.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Fource-CUC Runtime &bull; Powered by Coherence-Under-Constraint (CUC) Algebra
+</footer>
+
+<script src="cuc_computer.js"></script>
+</body>
+</html>

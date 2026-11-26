@@ -31,3 +31,5 @@ jobs:
         run: python examples/cuc_neural_network.py
       - name: Run CUC Virtual Machine Program
         run: python examples/run_cuc_vm.py
+      - name: Run Deep Multi-Layer CUC Network
+        run: python examples/deep_cuc_net.py

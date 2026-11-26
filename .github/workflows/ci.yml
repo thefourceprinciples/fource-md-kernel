@@ -27,3 +27,7 @@ jobs:
         run: python examples/kuramoto_net.py
       - name: Run Multi-Basin Kuramoto Branching Simulation
         run: python examples/kuramoto_branch_net.py
+      - name: Run CUC Neural Network Training
+        run: python examples/cuc_neural_network.py
+      - name: Run CUC Virtual Machine Program
+        run: python examples/run_cuc_vm.py
